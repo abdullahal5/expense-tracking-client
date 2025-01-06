@@ -1,0 +1,124 @@
+/* General Styles */
+.navbar {
+  position: fixed;
+  z-index: 50;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 10px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.logo h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.brand-color {
+  color: #6a0dad; /* Purple */
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-item {
+  font-size: 1.2rem;
+  color: white;
+  font-weight: medium;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-item.active {
+  color: #6a0dad; /* Purple */
+}
+
+.nav-item:hover {
+  color: #6a0dad; /* Purple */
+}
+
+.upgrade-button {
+  display: flex;
+  align-items: center;
+  background-color: #6a0dad;
+  padding: 5px 15px;
+  border-radius: 20px;
+  color: white;
+  font-size: 1rem;
+  font-weight: medium;
+}
+
+.upgrade-button .icon {
+  margin-right: 5px;
+}
+
+.login-btn {
+  background-color: #6a0dad;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #7a4cc2;
+}
+
+/* Mobile Navbar */
+.mobile-navbar {
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 10px 0;
+}
+
+.mobile-navbar .nav-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mobile-navbar .icon {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.mobile-navbar .label {
+  font-size: 0.75rem;
+  color: #333;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .desktop-navbar {
+    display: none;
+  }
+  .mobile-navbar {
+    display: flex;
+  }
+}
+
+@media (min-width: 1025px) {
+  .desktop-navbar {
+    display: flex;
+  }
+  .mobile-navbar {
+    display: none;
+  }
+}
