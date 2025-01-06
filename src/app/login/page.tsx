@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FaEnvelope, FaLock, FaSpinner } from "react-icons/fa";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import "./styles.css";
+import styles from "./Login.module.css";
 import { useRouter } from "next/navigation";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { TResponse } from "@/types";
@@ -82,13 +82,13 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
-      <form onSubmit={handleLogin} className="card">
-        <h1 className="title">Welcome Back!</h1>
-        <p className="subtitle">Please login to your account</p>
+    <div className={styles.container}>
+      <form onSubmit={handleLogin} className={styles.card}>
+        <h1 className={styles.title}>Welcome Back!</h1>
+        <p className={styles.subtitle}>Please login to your account</p>
 
-        <div className="inputGroup">
-          <FaEnvelope className="icon" />
+        <div className={styles.inputGroup}>
+          <FaEnvelope className={styles.icon} />
           <input
             type="email"
             placeholder="Email"
@@ -97,8 +97,8 @@ const Login = () => {
           />
         </div>
 
-        <div className="inputGroup">
-          <FaLock className="icon" />
+        <div className={styles.inputGroup}>
+          <FaLock className={styles.icon} />
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
@@ -107,30 +107,34 @@ const Login = () => {
           />
           <button
             type="button"
-            className="passwordToggle"
+            className={styles.passwordToggle}
             onClick={togglePasswordVisibility}
           >
             {showPassword ? (
-              <AiOutlineEyeInvisible className="icon" />
+              <AiOutlineEyeInvisible className={styles.icon} />
             ) : (
-              <AiOutlineEye className="icon" />
+              <AiOutlineEye className={styles.icon} />
             )}
           </button>
         </div>
 
-        <button type="submit" className="button">
-          {isLoading ? <FaSpinner className="loadingSpinner" /> : "Sign Up"}
+        <button type="submit" className={styles.button}>
+          {isLoading ? (
+            <FaSpinner className={styles.loadingSpinner} />
+          ) : (
+            "Sign Up"
+          )}
         </button>
 
         <button
           type="button"
-          className="defaultButton"
+          className={styles.defaultButton}
           onClick={setDefaultValues}
         >
           Quick login
         </button>
 
-        <p className="signup">
+        <p className={styles.signup}>
           Don&apos;t have an account?{" "}
           <span onClick={() => router.push("/signup")}>Sign Up</span>
         </p>

@@ -1,4 +1,5 @@
-.signup-container {
+/* Signup.module.css */
+.signupContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,7 +8,7 @@
   font-family: "Arial", sans-serif;
 }
 
-.signup-card {
+.signupCard {
   background: #fff;
   border-radius: 20px;
   padding: 2rem;
@@ -17,13 +18,13 @@
   text-align: center;
 }
 
-.signup-title {
+.signupTitle {
   font-size: 2rem;
   color: #6a11cb;
   margin-bottom: 0.5rem;
 }
 
-.signup-subtitle {
+.signupSubtitle {
   font-size: 1rem;
   color: #6b6b6b;
   margin-bottom: 1.5rem;
@@ -39,11 +40,7 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.inputGroup input:focus {
-  outline: none;
-}
-
-.inputGroup:has(input:focus) {
+.inputGroupFocused {
   border-color: #8b5cf6;
   box-shadow: 0 0 4px 2px rgba(139, 92, 246, 0.5);
 }
@@ -54,7 +51,7 @@
   color: #6b6b6b;
 }
 
-.password-toggle {
+.passwordToggle {
   background: none;
   border: none;
   cursor: pointer;
@@ -64,7 +61,7 @@
   outline: none;
 }
 
-.password-toggle:hover {
+.passwordToggle:hover {
   color: #6a11cb;
 }
 
@@ -82,11 +79,20 @@
   }
 }
 
-input {
+.inputGroup input {
   flex: 1;
   padding: 1rem;
   border: none;
   outline: none;
+}
+
+.inputGroup input:focus {
+  outline: none;
+}
+
+.inputGroup:has(input:focus) {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 4px 2px rgba(139, 92, 246, 0.5);
 }
 
 .fileInput {
@@ -164,7 +170,6 @@ input {
   cursor: pointer;
 }
 
-
 .fileInput:focus-within {
   outline: none;
   border-color: #7c3aed;
@@ -174,7 +179,7 @@ input {
   color: #6a11cb;
 }
 
-.signup-button {
+.signupButton {
   background: #6a11cb;
   color: white;
   border: none;
@@ -186,11 +191,11 @@ input {
   transition: background 0.3s;
 }
 
-.signup-button:hover {
+.signupButton:hover {
   background: #2575fc;
 }
 
-.signup-footer {
+.signupFooter {
   font-size: 0.9rem;
   margin-top: 1rem;
 }
@@ -206,19 +211,19 @@ input {
 }
 
 @media (max-width: 600px) {
-  .signup-card {
+  .signupCard {
     padding: 1.5rem;
   }
 
-  .signup-title {
+  .signupTitle {
     font-size: 1.75rem;
   }
 
-  .signup-subtitle {
+  .signupSubtitle {
     font-size: 0.9rem;
   }
 
-  .signup-button {
+  .signupButton {
     padding: 0.75rem;
   }
 }

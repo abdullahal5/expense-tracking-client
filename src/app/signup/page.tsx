@@ -1,27 +1,18 @@
+"use client"
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
-import { useState } from "react";
-import {
-  FaUser,
-  FaEnvelope,
-  FaLock,
-  FaUpload,
-  FaEye,
-  FaEyeSlash,
-  FaSpinner,
-} from "react-icons/fa";
-import "./styles.css";
-import Link from "next/link";
+import { FaEnvelope, FaEye, FaEyeSlash, FaLock, FaUpload, FaUser } from "react-icons/fa";
+import styles from "./Signup.module.css";
 import Image from "next/image";
-import { AiOutlineClose } from "react-icons/ai";
-import { uploadImageToImgBB } from "@/utils/uploadImagetoimgbb";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
-import { TResponse } from "@/types";
-import { toast } from "sonner";
-import { verifyToken } from "@/utils/verifyToken";
+import { useState } from "react";
 import { useAppDispatch } from "@/redux/hook";
+import { useRouter } from "next/navigation";
+import { uploadImageToImgBB } from "@/utils/uploadImagetoimgbb";
+import { verifyToken } from "@/utils/verifyToken";
 import { setUser } from "@/redux/features/auth/authSlice";
 import { storeUserInfo } from "@/service/auth.service";
+import { toast } from "sonner";
+import { TResponse } from "@/types";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -34,6 +25,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
@@ -51,18 +43,6 @@ const Signup = () => {
 
   const handlePasswordToggle = () => {
     setShowPassword((prev) => !prev);
-  };
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
-
-  const removeImage = () => {
-    setImagePreview(null);
-    setFormData((prev) => ({ ...prev, profilePicture: null }));
   };
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -102,7 +82,7 @@ const Signup = () => {
         })
       );
 
-      // router.push("/");
+      router.push("/");
       storeUserInfo({ accessToken: token });
 
       setFormData({
@@ -116,13 +96,13 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup-container">
-      <form onSubmit={handleSignup} className="signup-card">
-        <h1 className="signup-title">Create an Account</h1>
-        <p className="signup-subtitle">Join us and enjoy the journey!</p>
+    <div className={styles.signupContainer}>
+      <form onSubmit={handleSignup} className={styles.signupCard}>
+        <h1 className={styles.signupTitle}>Create an Account</h1>
+        <p className={styles.signupSubtitle}>Join us and enjoy the journey!</p>
 
-        <div className="inputGroup">
-          <FaUser className="icon" />
+        <div className={styles.inputGroup}>
+          <FaUser className={styles.icon} />
           <input
             type="text"
             name="name"
@@ -132,8 +112,8 @@ const Signup = () => {
           />
         </div>
 
-        <div className="inputGroup">
-          <FaEnvelope className="icon" />
+        <div className={styles.inputGroup}>
+          <FaEnvelope className={styles.icon} />
           <input
             type="email"
             name="email"
@@ -143,8 +123,8 @@ const Signup = () => {
           />
         </div>
 
-        <div className="inputGroup">
-          <FaLock className="icon" />
+        <div className={styles.inputGroup}>
+          <FaLock className={styles.icon} />
           <input
             type={showPassword ? "text" : "password"}
             name="password"
@@ -154,60 +134,67 @@ const Signup = () => {
           />
           <button
             type="button"
-            className="password-toggle"
+            className={styles.passwordToggle}
             onClick={handlePasswordToggle}
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
 
-        <div className="inputGroup fileInput">
-          <FaUpload className="icon uploadIcon" />
-          <label className="fileLabel">
+        <div className={`${styles.inputGroup} ${styles.fileInput}`}>
+          <FaUpload className={styles.icon} />
+          <label className={styles.fileLabel}>
             <input
               type="file"
               name="profilePicture"
               onChange={handleFileChange}
-              className="hiddenInput"
+              className={styles.hiddenInput}
             />
             Upload Profile Picture
           </label>
         </div>
 
-        <div className="imageUpload">
+        <div className={styles.imageUpload}>
           {imagePreview && (
-            <div className="imagePreview">
+            <div className={styles.imagePreview}>
               <Image
                 src={imagePreview}
                 alt="Profile Preview"
-                width={50}
-                height={50}
-                className="previewImage"
+                width={100}
+                height={100}
+                className={styles.previewImage}
               />
               <button
                 type="button"
-                className="removeImageButton"
-                onClick={removeImage}
+                className={styles.removeImageButton}
+                onClick={() => {
+                  setImagePreview(null);
+                  setFormData((prev) => ({ ...prev, profilePicture: null }));
+                }}
               >
-                <AiOutlineClose />
+                X
               </button>
             </div>
           )}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            id="profileImage"
-            style={{ display: "none" }}
-          />
         </div>
 
-        <button disabled={isLoading} type="submit" className="signup-button">
-          {isLoading ? <FaSpinner className="loadingSpinner" /> : "Sign Up"}
+        <button
+          type="submit"
+          className={styles.signupButton}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <div className={styles.loadingSpinner}></div>
+          ) : (
+            "Sign Up"
+          )}
         </button>
 
-        <p className="signup-footer">
-          Already have an account? <Link href={"/login"}>Login</Link>
+        <p className={styles.signupFooter}>
+          Already have an account?{" "}
+          <span className={styles.link} onClick={() => router.push("/login")}>
+            Login
+          </span>
         </p>
       </form>
     </div>

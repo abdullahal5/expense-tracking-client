@@ -17,6 +17,7 @@
   max-width: 400px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   text-align: center;
+  transition: box-shadow 0.3s ease;
 }
 
 .title {
@@ -54,6 +55,13 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.inputGroup input {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  outline: none;
+}
+
 .inputGroup input:focus {
   outline: none;
 }
@@ -86,13 +94,6 @@
 
 .passwordToggle:hover .icon {
   color: #6a11cb;
-}
-
-input {
-  flex: 1;
-  padding: 1rem;
-  border: none;
-  outline: none;
 }
 
 .button {
@@ -159,5 +160,13 @@ input {
   .button,
   .defaultButton {
     padding: 0.65rem;
+  }
+
+  .icon {
+    font-size: 30px;
+  }
+
+  .passwordToggle .icon {
+    font-size: 35px;
   }
 }
