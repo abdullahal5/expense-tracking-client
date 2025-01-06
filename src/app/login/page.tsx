@@ -41,6 +41,8 @@ const Login = () => {
         })
       );
 
+      router.push("/");
+
       storeUserInfo({ accessToken: token });
     }
   };
@@ -69,6 +71,7 @@ const Login = () => {
           user: decoded,
         })
       );
+      router.push("/");
 
       storeUserInfo({ accessToken: token });
     }
