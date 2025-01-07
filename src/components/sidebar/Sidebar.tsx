@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaChartLine,
   FaFileAlt,
@@ -11,14 +11,18 @@ import {
 } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./Sidebar.module.css";
+import { useAppSelector } from "@/redux/hook";
+import Image from "next/image";
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useAppSelector((state) => state.auth);
+  const [isClient, setIsClient] = useState(false);
 
   const handleRouteChange = (route: string) => {
-    router.push(`/${route}`);
+    router.push(`/dashboard/${route}`);
   };
 
   const handleLogout = () => {
@@ -29,6 +33,10 @@ const Sidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <>
       <button className={styles["hamburger-btn"]} onClick={toggleSidebar}>
@@ -37,14 +45,29 @@ const Sidebar = () => {
       <div className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ""}`}>
         <div
           className={styles["sidebar-header"]}
-          onClick={() => handleRouteChange("/")}
+          onClick={() => handleRouteChange("overview")}
         >
           <h2 className={styles.logo}>My Dashboard</h2>
         </div>
+        {isClient && user && (
+          <div className={styles["profile-section"]}>
+            <Image
+              src={user?.profilePicture as string}
+              width={50}
+              height={50}
+              alt="profile Image"
+              className={styles["profile-avatar"]}
+            />
+            <div className={styles["profile-details"]}>
+              <p className={styles["profile-name"]}>{user?.name}</p>
+              <p className={styles["profile-email"]}>{user?.email}</p>
+            </div>
+          </div>
+        )}
         <ul className={styles["sidebar-menu"]}>
           <li
             className={`${styles["sidebar-item"]} ${
-              pathname === "/overview" ? styles.active : ""
+              pathname === "/dashboard/overview" ? styles.active : ""
             }`}
             onClick={() => handleRouteChange("overview")}
           >
@@ -53,7 +76,7 @@ const Sidebar = () => {
           </li>
           <li
             className={`${styles["sidebar-item"]} ${
-              pathname === "/add-expense" ? styles.active : ""
+              pathname === "/dashboard/add-expense" ? styles.active : ""
             }`}
             onClick={() => handleRouteChange("add-expense")}
           >
@@ -62,7 +85,7 @@ const Sidebar = () => {
           </li>
           <li
             className={`${styles["sidebar-item"]} ${
-              pathname === "/summary" ? styles.active : ""
+              pathname === "/dashboard/summary" ? styles.active : ""
             }`}
             onClick={() => handleRouteChange("summary")}
           >
@@ -71,7 +94,7 @@ const Sidebar = () => {
           </li>
           <li
             className={`${styles["sidebar-item"]} ${
-              pathname === "/history" ? styles.active : ""
+              pathname === "/dashboard/history" ? styles.active : ""
             }`}
             onClick={() => handleRouteChange("history")}
           >
@@ -80,7 +103,7 @@ const Sidebar = () => {
           </li>
           <li
             className={`${styles["sidebar-item"]} ${
-              pathname === "/settings" ? styles.active : ""
+              pathname === "/dashboard/settings" ? styles.active : ""
             }`}
             onClick={() => handleRouteChange("settings")}
           >

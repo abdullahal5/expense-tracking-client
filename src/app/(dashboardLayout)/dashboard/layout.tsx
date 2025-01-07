@@ -1,12 +1,12 @@
 import Sidebar from "@/components/sidebar/Sidebar";
 import { ReactNode } from "react";
-import "./layout.css";
+import styles from "./Layout.module.css";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="layout-container">
+    <div className={styles.layoutContainer}>
       <Sidebar />
-      <main className="content">{children}</main>
+      <main className={styles.content}>{children}</main>
     </div>
   );
 };

@@ -1,0 +1,14 @@
+.layoutContainer {
+  display: flex;
+  height: 100vh;
+}
+
+.content {
+  background-color: #e2e8f0;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.sidebar {
+  flex-shrink: 0;
+}

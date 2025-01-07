@@ -1,0 +1,147 @@
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.card-icon-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  background-color: #e0f2fe;
+  color: #1d4ed8;
+  border-radius: 50%;
+  font-size: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.icon:hover {
+  background-color: #7c3aed;
+  color: #fff;
+}
+
+.itemCount {
+  color: #64748b;
+  font-size: small;
+}
+
+.title {
+  margin-right: 20px;
+}
+
+.title h2 {
+  font-size: x-large;
+}
+
+.amount {
+  font-weight: bold;
+  font-size: x-large;
+  color: #7c3aed;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #e7e5e5;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 15px;
+}
+
+.spent {
+  color: #64748b;
+  font-size: small;
+}
+
+.remaining {
+  color: #64748b;
+  font-size: small;
+}
+
+.percentage {
+  font-size: medium;
+  font-weight: bold;
+  color: #1d4ed8;
+  padding: 5px 10px;
+  background-color: #e0f2fe;
+  border-radius: 5px;
+  text-align: center;
+  width: fit-content;
+}
+
+.progress-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Make the card fully responsive */
+@media (max-width: 600px) {
+  .card {
+    padding: 15px;
+  }
+
+  .title h2 {
+    font-size: large;
+  }
+
+  .amount {
+    font-size: large;
+  }
+
+  .progress-bar {
+    height: 8px;
+  }
+
+  .icon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}

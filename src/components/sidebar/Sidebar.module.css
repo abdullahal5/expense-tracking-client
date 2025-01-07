@@ -52,7 +52,8 @@
 }
 
 .sidebar-item.active {
-  background-color: #1abc9c;
+  background-color: #8b5cf6;
+  color: white;
   border-radius: 5px;
 }
 
@@ -171,5 +172,70 @@
   .logout-btn {
     font-size: 14px;
     padding: 0.8rem;
+  }
+}
+
+/* profile */
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  padding: 20px;
+  width: 100%;
+  border-top: 1px dashed #9ca3af;
+  border-bottom: 1px dashed #9ca3af;
+}
+
+.profile-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-avatar {
+  border-radius: 50%;
+  border: 2px solid #818cf8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.profile-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3f3f46;
+}
+
+.profile-email {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .profile-section {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .profile-name {
+    font-size: 16px;
+  }
+
+  .profile-email {
+    font-size: 12px;
   }
 }

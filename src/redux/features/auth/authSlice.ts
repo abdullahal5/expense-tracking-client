@@ -4,7 +4,7 @@ import { RootState } from "../../store";
 
 export interface user {
   userId: string;
-  username: string;
+  name: string;
   email: string;
   profilePicture: string;
   iat: number;
