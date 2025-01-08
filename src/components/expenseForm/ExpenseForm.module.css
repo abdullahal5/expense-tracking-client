@@ -42,6 +42,19 @@
   border-color: #007bff;
 }
 
+.expenseForm textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  transition: border-color 0.3s, outline 0.3s;
+}
+
+.expenseForm textarea:focus {
+  border-color: #007bff !important;
+  outline: none;
+}
+
 .btn {
   width: 100%;
   padding: 0.8rem;
@@ -70,4 +83,22 @@
 
 .subContainer {
   width: 100%;
+}
+
+.defaultbtn {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #007bff;
+  color: #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.defaultbtn:hover {
+  background-color: #0056b3;
+  color: white;
+  border: none;
 }
