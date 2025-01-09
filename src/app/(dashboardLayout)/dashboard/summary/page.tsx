@@ -45,24 +45,39 @@ const Summary = () => {
     (item) => item?.author?._id === user?.userId
   );
 
-  const data = filteredOwnData?.slice(0, 6).map((expense) => ({
+  const data = filteredOwnData?.map((expense) => ({
     _id: expense._id,
-    Name: expense.author?.name || "Unknown",
-    Email: expense.author?.email || "Unknown",
-    Date: expense?.createdAt
-      ? new Date(expense.createdAt).toISOString().split("T")[0]
-      : "N/A",
-    Category: expense?.category || "Uncategorized",
-    Rate: `$${expense?.amount?.toFixed(2) || "0.00"}`,
+    Name: {
+      value: expense.author?.name || "Unknown",
+      tooltip: expense.purpose || "No purpose provided",
+    },
+    Email: {
+      value: expense.author?.email || "Unknown",
+      tooltip: expense.purpose || "No purpose provided",
+    },
+    Date: {
+      value: expense?.createdAt
+        ? new Date(expense.createdAt).toISOString().split("T")[0]
+        : "N/A",
+      tooltip: expense.purpose || "No purpose provided",
+    },
+    Category: {
+      value: expense?.category || "Uncategorized",
+      tooltip: expense.purpose || "No purpose provided",
+    },
+    Rate: {
+      value: `$${expense?.amount?.toFixed(2) || "0.00"}`,
+      tooltip: expense.purpose || "No purpose provided",
+    },
   }));
 
   const today = new Date();
   const formattedToday = today.toISOString().split("T")[0];
 
   const filteredData = data?.filter((row) => {
-    if (!row.Date) return false;
+    if (!row.Date.value) return false;
 
-    const expenseDate = new Date(row.Date);
+    const expenseDate = new Date(row.Date.value);
     switch (filter) {
       case "Today":
         return expenseDate.toISOString().split("T")[0] === formattedToday;
@@ -90,22 +105,26 @@ const Summary = () => {
     }
   });
 
-  const updatedData = filteredData?.map((row) => ({
-    ...row,
-    Actions: (
-      <div style={{ display: "flex", gap: "8px" }}>
-        <FaEdit
-          onClick={() => openModal(row._id)}
-          style={{ color: "#6366f1", cursor: "pointer" }}
-        />
-        <FaTrash style={{ color: "#ef4444", cursor: "pointer" }} />
-      </div>
-    ),
-  }));
+  const updatedData = filteredData?.map((row) => {
+
+    console.log(row);
+    return {
+      ...row,
+      Actions: (
+        <div style={{ display: "flex", gap: "8px" }}>
+          <FaEdit
+            onClick={() => openModal(row._id)}
+            style={{ color: "#6366f1", cursor: "pointer" }}
+          />
+          <FaTrash style={{ color: "#ef4444", cursor: "pointer" }} />
+        </div>
+      ),
+    };
+  });
 
   const totalPrice =
     filteredData?.reduce((acc, curr) => {
-      const rate = Number(curr.Rate.replace(/^\$/, ""));
+      const rate = Number(curr.Rate.value.replace(/^\$/, ""));
       if (isNaN(rate)) {
         console.warn("Invalid rate:", curr.Rate);
       }

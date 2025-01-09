@@ -1,8 +1,9 @@
 .card {
   background-color: #fff;
   border-radius: 8px;
-  padding: 20px;
-  max-width: 400px;
+  padding: 2rem;
+  flex-grow: 1;
+  margin-top: 2rem;
   width: 100%;
   border: 1px solid #cbd0d4;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -116,6 +117,133 @@
   justify-content: center;
 }
 
+.expenseForm {
+  background-color: #fff;
+  margin: 2rem auto;
+  padding: 3rem 2rem;
+  border-radius: 10px;
+  border: 1px solid #cbd0d4;
+  width: 100%;
+}
+
+.expenseForm h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.formControl {
+  margin-bottom: 1.5rem;
+}
+
+.expenseForm label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.expenseForm select,
+.expenseForm input[type="number"],
+.expenseForm input[type="text"] {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.expenseForm select:focus,
+.expenseForm input:focus {
+  border-color: #007bff;
+}
+
+.expenseForm textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  transition: border-color 0.3s, outline 0.3s;
+}
+
+.expenseForm textarea:focus {
+  border-color: #007bff !important;
+  outline: none;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.container {
+  flex-grow: 1;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.subContainer {
+  width: 100%;
+}
+
+.defaultbtn {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #007bff;
+  color: #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.defaultbtn:hover {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+}
+
+.summaryDetailsconatiner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+.cardAndChartContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chartContainer {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  flex-grow: 1;
+  margin: 0 auto;
+  width: 100%;
+  border: 1px solid #cbd0d4;
+}
+
 @media (max-width: 600px) {
   .card {
     padding: 15px;
@@ -137,5 +265,9 @@
     width: 40px;
     height: 40px;
     font-size: 20px;
+  }
+
+  .summaryDetailsconatiner {
+    flex-direction: column;
   }
 }

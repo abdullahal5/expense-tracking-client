@@ -16,20 +16,20 @@ const History = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [customDate, setCustomDate] = useState<string>("");
   const { user } = useAppSelector((state) => state.auth);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [selectedExpenseId, setSelectedExpenseId] = useState<string | null>(
-      null
-    );
-  
-    const openModal = (id: string) => {
-      setSelectedExpenseId(id);
-      setModalOpen(true);
-    };
-    const closeModal = () => {
-      setSelectedExpenseId(null);
-      setModalOpen(false);
-    };
-  
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedExpenseId, setSelectedExpenseId] = useState<string | null>(
+    null
+  );
+
+  const openModal = (id: string) => {
+    setSelectedExpenseId(id);
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setSelectedExpenseId(null);
+    setModalOpen(false);
+  };
+
   const { data: expenses } = useGetAllExpenseQuery(undefined) as TResponse<any>;
   const allExpenses = expenses?.data as IExpense[];
 
@@ -42,23 +42,39 @@ const History = () => {
 
   const data = filteredOwnData?.map((expense) => ({
     _id: expense._id,
-    Name: expense.author?.name || "Unknown",
-    Email: expense.author?.email || "Unknown",
-    Date: expense?.createdAt
-      ? new Date(expense.createdAt).toISOString().split("T")[0]
-      : "N/A",
-    Category: expense?.category || "Uncategorized",
-    Rate: `$${expense?.amount?.toFixed(2) || "0.00"}`,
+    Name: {
+      value: expense.author?.name || "Unknown",
+      tooltip: expense.purpose || "No purpose provided",
+    },
+    Email: {
+      value: expense.author?.email || "Unknown",
+      tooltip: expense.purpose || "No purpose provided",
+    },
+    Date: {
+      value: expense?.createdAt
+        ? new Date(expense.createdAt).toISOString().split("T")[0]
+        : "N/A",
+      tooltip: expense.purpose || "No purpose provided",
+    },
+    Category: {
+      value: expense?.category || "Uncategorized",
+      tooltip: expense.purpose || "No purpose provided",
+    },
+    Rate: {
+      value: `$${expense?.amount?.toFixed(2) || "0.00"}`,
+      tooltip: expense.purpose || "No purpose provided",
+    },
   }));
+
 
   const filteredData = data?.filter((row) => {
     if (!row.Date) return false;
 
-    const expenseDate = new Date(row.Date);
+    const expenseDate = new Date(row.Date.value);
     const matchesSearch =
-      row.Name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      row.Email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      row.Category.toLowerCase().includes(searchQuery.toLowerCase());
+      row.Name.value.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      row.Email.value.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      row.Category.value.toLowerCase().includes(searchQuery.toLowerCase());
 
     switch (filter) {
       case "All":
@@ -103,7 +119,10 @@ const History = () => {
     ...row,
     Actions: (
       <div className={styles.actionIcons}>
-        <FaEdit onClick={() => openModal(row?._id)} className={styles.editIcon} />
+        <FaEdit
+          onClick={() => openModal(row?._id)}
+          className={styles.editIcon}
+        />
         <FaTrash className={styles.deleteIcon} />
       </div>
     ),

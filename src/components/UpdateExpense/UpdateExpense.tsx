@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ExpenseForm.module.css";
 import {
-  useGetSinleExpenseQuery,
+  useGetSingleExpenseByIdQuery,
   useUpdateExpenseMutation,
 } from "@/redux/features/expense/expenseApi";
 import { useAppSelector } from "@/redux/hook";
@@ -25,11 +25,12 @@ const UpdateExpense = ({
     purpose: "",
   });
 
-  const { data, isSuccess } = useGetSinleExpenseQuery(
-    contentId
-  ) as unknown as TResponse<any>;
+  const { data, isSuccess } = useGetSingleExpenseByIdQuery({
+    id: contentId,
+  }) as unknown as TResponse<any>;
   const [updateExpense] = useUpdateExpenseMutation();
 
+  console.log(data?.data);
   useEffect(() => {
     if (isSuccess && data) {
       const updateContentData = data.data as IExpense;

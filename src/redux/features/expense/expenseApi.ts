@@ -29,7 +29,18 @@ const expenseApi = baseApi.injectEndpoints({
       providesTags: ["expense"],
     }),
     getSinleExpense: builder.query({
-      query: (id) => {
+      query: ({ userId, category }) => {
+        console.log(userId, category);
+        return {
+          url: `/expense/get-single-by-category/${userId}`,
+          method: "GET",
+          params: category,
+        };
+      },
+      providesTags: ["expense"],
+    }),
+    getSingleExpenseById: builder.query({
+      query: ({ id }) => {
         return {
           url: `/expense/get-single/${id}`,
           method: "GET",
@@ -67,5 +78,6 @@ export const {
   useGetSinleExpenseQuery,
   useGetAllExpenseByQueryQuery,
   useUpdateExpenseMutation,
+  useGetSingleExpenseByIdQuery,
   useDeleteExpenseMutation,
 } = expenseApi;
