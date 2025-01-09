@@ -28,7 +28,8 @@ const authApi = baseApi.injectEndpoints({
       providesTags: ["user"],
     }),
     getSinleUser: builder.query({
-      query: ({ id }) => {
+      query: (id) => {
+        console.log(id);
         return {
           url: `/user/get-single/${id}`,
           method: "GET",
@@ -37,10 +38,11 @@ const authApi = baseApi.injectEndpoints({
       providesTags: ["user"],
     }),
     updateUser: builder.mutation({
-      query: ({ id }) => {
+      query: ({ id, body }) => {
         return {
           url: `/user/update/${id}`,
-          method: "GET",
+          method: "PUT",
+          body: body,
         };
       },
       invalidatesTags: ["user"],
@@ -62,6 +64,7 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useGetAllUserQuery,
+  useGetSinleUserQuery,
   useUpdateUserMutation,
   useDeletUserMutation,
 } = authApi;

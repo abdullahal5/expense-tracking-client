@@ -8,7 +8,6 @@ export type TError = {
   status: number;
 };
 
-
 export type TResponse<T> = {
   data: {
     accessToken: any;
@@ -18,4 +17,56 @@ export type TResponse<T> = {
     message: string;
   };
   error?: TError;
+  isSuccess?: boolean
 };
+
+export type TSpendingLimit = {
+  name: string;
+  limit: number;
+};
+
+export interface ISummary {
+  _id: string;
+  name: string;
+  email: string;
+  expenses: IExpense[];
+  profilePicture: string;
+  spendingLimits: SpendingLimit[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface IUser {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  profilePicture: string;
+}
+
+
+export interface IExpense {
+  _id: string;
+  author: IUser;
+  category: string;
+  amount: number;
+  purpose: string;
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface SpendingLimit {
+  _id: string;
+  name: string;
+  limit: number;
+}
+
+export interface ICategoryCard {
+  name: string;
+  limit: number;
+  totalItems: number;
+  totalSpentAmount: number;
+}

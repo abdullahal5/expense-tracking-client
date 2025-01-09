@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
 import Title from "@/components/title/Title";
@@ -5,69 +6,63 @@ import styles from "./Summary.module.css";
 import CategoryCard from "@/components/categoryCard/CategoryCard";
 import Table from "@/components/table/Table";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { useAppSelector } from "@/redux/hook";
+import { useGetSinleUserQuery } from "@/redux/features/auth/authApi";
+import { IExpense, TResponse, TSpendingLimit } from "@/types";
+import { useGetAllExpenseQuery } from "@/redux/features/expense/expenseApi";
+import { filterOptionsByDate, tableHead } from "@/contant";
+import Modal from "@/components/modal/Modal";
+import UpdateExpense from "@/components/UpdateExpense/UpdateExpense";
 
 const Summary = () => {
-  const [filter, setFilter] = useState("Today");
-  const [customDate, setCustomDate] = useState("");
+  const [filter, setFilter] = useState<string>("Today");
+  const [customDate, setCustomDate] = useState<string>("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedExpenseId, setSelectedExpenseId] = useState<string | null>(
+    null
+  );
 
-  const columns = [
-    "Name",
-    "Email",
-    "Date",
-    "Category",
-    "Rate",
-    "Product Name",
-    "Actions",
-  ];
+  const openModal = (id: string) => {
+    setSelectedExpenseId(id);
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setSelectedExpenseId(null);
+    setModalOpen(false);
+  };
 
-  const data = [
-    {
-      Name: "John Doe",
-      Email: "john.doe@example.com",
-      ExpenseDate: "2025-01-05",
-      Category: "Office",
-      Expense: "50",
-      ProductName: "Laptop",
-    },
-    {
-      Name: "Jane Smith",
-      Email: "jane.smith@example.com",
-      ExpenseDate: "2025-01-06",
-      Category: "Transportation",
-      Expense: "120",
-      ProductName: "Flight Ticket",
-    },
-    {
-      Name: "Alice Johnson",
-      Email: "alice.j@example.com",
-      ExpenseDate: "2025-01-04",
-      Category: "Event",
-      Expense: "200",
-      ProductName: "Conference Ticket",
-    },
-    {
-      Name: "Bob Brown",
-      Email: "bob.brown@example.com",
-      ExpenseDate: "2025-01-07",
-      Category: "Meals",
-      Expense: "30",
-      ProductName: "Lunch",
-    },
-  ];
+  const { user } = useAppSelector((state) => state.auth);
+  const { data: getMe } = useGetSinleUserQuery(
+    user ? user?.userId : null
+  ) as unknown as TResponse<any>;
 
-  const filterOptions = [
-    "Today",
-    "Yesterday",
-    "Last 7 Days",
-    "Last 1 Month",
-    "Custom",
-  ];
+  const spendingLimits = getMe?.data?.spendingLimits as TSpendingLimit[];
+
+  const { data: expenses } = useGetAllExpenseQuery(undefined) as TResponse<any>;
+  const allExpenses = expenses?.data as IExpense[];
+
+  const filteredOwnData = allExpenses?.filter(
+    (item) => item?.author?._id === user?.userId
+  );
+
+  const data = filteredOwnData?.slice(0, 6).map((expense) => ({
+    _id: expense._id,
+    Name: expense.author?.name || "Unknown",
+    Email: expense.author?.email || "Unknown",
+    Date: expense?.createdAt
+      ? new Date(expense.createdAt).toISOString().split("T")[0]
+      : "N/A",
+    Category: expense?.category || "Uncategorized",
+    Rate: `$${expense?.amount?.toFixed(2) || "0.00"}`,
+  }));
 
   const today = new Date();
   const formattedToday = today.toISOString().split("T")[0];
 
-  const filteredData = data.filter((row) => {
-    const expenseDate = new Date(row.ExpenseDate);
+  const filteredData = data?.filter((row) => {
+    if (!row.Date) return false;
+
+    const expenseDate = new Date(row.Date);
     switch (filter) {
       case "Today":
         return expenseDate.toISOString().split("T")[0] === formattedToday;
@@ -95,38 +90,71 @@ const Summary = () => {
     }
   });
 
-  const updatedData = filteredData.map((row) => ({
+  const updatedData = filteredData?.map((row) => ({
     ...row,
     Actions: (
       <div style={{ display: "flex", gap: "8px" }}>
-        <FaEdit style={{ color: "#6366f1", cursor: "pointer" }} />
+        <FaEdit
+          onClick={() => openModal(row._id)}
+          style={{ color: "#6366f1", cursor: "pointer" }}
+        />
         <FaTrash style={{ color: "#ef4444", cursor: "pointer" }} />
       </div>
     ),
   }));
 
-  const totalPrice = filteredData.reduce((acc, curr) => {
-    const price = Number(curr.Expense)
-    return acc + price
-  }, 0)
-  
+  const totalPrice =
+    filteredData?.reduce((acc, curr) => {
+      const rate = Number(curr.Rate.replace(/^\$/, ""));
+      if (isNaN(rate)) {
+        console.warn("Invalid rate:", curr.Rate);
+      }
+      return acc + (isNaN(rate) ? 0 : rate);
+    }, 0) || 0;
+
+  const calculateCategoryData = (category: string) => {
+    const categoryExpenses =
+      allExpenses?.filter((expense) => expense?.category === category) || [];
+
+    const totalItems = categoryExpenses?.length;
+    const totalSpentAmount = categoryExpenses?.reduce(
+      (acc, curr) => acc + curr?.amount,
+      0
+    );
+
+    return {
+      name: category,
+      limit: spendingLimits?.find((sl) => sl?.name === category)?.limit || 0,
+      totalItems,
+      totalSpentAmount,
+    };
+  };
+
+  const categoryData = [
+    "Groceries",
+    "Transportation",
+    "Healthcare",
+    "Utility",
+    "Charity",
+    "Miscellaneous",
+  ].map(calculateCategoryData);
+
   return (
     <>
       <div className={styles.container}>
         <Title title="Summary of your daily expense" />
         <div className={styles["category-card-container"]}>
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
+          {categoryData?.map((item) => (
+            <div key={item.name}>
+              <CategoryCard item={item} />
+            </div>
+          ))}
         </div>
       </div>
 
       <Title title="Your Latest Added Expense" />
       <div className={styles["filter-tabs"]}>
-        {filterOptions.map((option) => (
+        {filterOptionsByDate.map((option) => (
           <div
             key={option}
             className={`${styles["filter-tab"]} ${
@@ -152,12 +180,27 @@ const Summary = () => {
       )}
 
       <div className={styles["table-and-price-container"]}>
-        <Table columns={columns} data={updatedData} />
+        <Table columns={tableHead} data={updatedData} />
 
         <div className={styles["total-price-container"]}>
           <p className={styles["total-price"]}>Total Price: ${totalPrice}</p>
         </div>
       </div>
+
+      {/* modal */}
+
+      {modalOpen && (
+        <Modal
+          openModal={modalOpen}
+          title="Update Expense"
+          closeModal={closeModal}
+        >
+          <UpdateExpense
+            closeModal={closeModal}
+            contentId={selectedExpenseId as string}
+          />
+        </Modal>
+      )}
     </>
   );
 };

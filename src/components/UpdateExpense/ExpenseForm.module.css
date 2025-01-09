@@ -1,0 +1,104 @@
+.expenseForm {
+  background-color: #f9f9f9;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+}
+
+.expenseForm h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.formControl {
+  margin-bottom: 1.5rem;
+}
+
+.expenseForm label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.expenseForm select,
+.expenseForm input[type="number"],
+.expenseForm input[type="text"] {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.expenseForm select:focus,
+.expenseForm input:focus {
+  border-color: #007bff;
+}
+
+.expenseForm textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  transition: border-color 0.3s, outline 0.3s;
+}
+
+.expenseForm textarea:focus {
+  border-color: #007bff !important;
+  outline: none;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.subContainer {
+  width: 100%;
+}
+
+.defaultbtn {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #007bff;
+  color: #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.defaultbtn:hover {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+}

@@ -19,8 +19,17 @@ const expenseApi = baseApi.injectEndpoints({
       },
       providesTags: ["expense"],
     }),
+    getAllExpenseByQuery: builder.query({
+      query: ({ category }) => {
+        return {
+          url: `/expense/get-all?category=${category}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["expense"],
+    }),
     getSinleExpense: builder.query({
-      query: ({ id }) => {
+      query: (id) => {
         return {
           url: `/expense/get-single/${id}`,
           method: "GET",
@@ -29,10 +38,12 @@ const expenseApi = baseApi.injectEndpoints({
       providesTags: ["expense"],
     }),
     updateExpense: builder.mutation({
-      query: ({ id }) => {
+      query: ({ id, expenseData }) => {
+        console.log(id);
         return {
           url: `/expense/update/${id}`,
-          method: "GET",
+          method: "PUT",
+          body: expenseData,
         };
       },
       invalidatesTags: ["expense"],
@@ -54,6 +65,7 @@ export const {
   useAddExpenseMutation,
   useGetAllExpenseQuery,
   useGetSinleExpenseQuery,
+  useGetAllExpenseByQueryQuery,
   useUpdateExpenseMutation,
   useDeleteExpenseMutation,
 } = expenseApi;

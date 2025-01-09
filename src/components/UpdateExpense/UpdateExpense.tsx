@@ -1,22 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ExpenseForm.module.css";
-import Title from "../title/Title";
-import { useAddExpenseMutation } from "@/redux/features/expense/expenseApi";
+import {
+  useGetSinleExpenseQuery,
+  useUpdateExpenseMutation,
+} from "@/redux/features/expense/expenseApi";
 import { useAppSelector } from "@/redux/hook";
 import { toast } from "sonner";
-import { TResponse, TSpendingLimit } from "@/types";
-import { useGetSinleUserQuery } from "@/redux/features/auth/authApi";
+import { IExpense, TResponse } from "@/types";
 
-const ExpenseForm = () => {
+const UpdateExpense = ({
+  contentId,
+  closeModal,
+}: {
+  contentId: string;
+  closeModal: () => void;
+}) => {
   const { user } = useAppSelector((state) => state.auth);
-
-  const { data: getMe } = useGetSinleUserQuery(
-    user ? user?.userId : null
-  ) as unknown as TResponse<any>;
-
-  const spendingLimits = getMe?.data?.spendingLimits as TSpendingLimit[];
 
   const [expense, setExpense] = useState({
     category: "",
@@ -24,15 +25,21 @@ const ExpenseForm = () => {
     purpose: "",
   });
 
-  console.log(spendingLimits);
+  const { data, isSuccess } = useGetSinleExpenseQuery(
+    contentId
+  ) as unknown as TResponse<any>;
+  const [updateExpense] = useUpdateExpenseMutation();
 
-  const [addExpense] = useAddExpenseMutation();
-
-  const defaultValues = {
-    category: "Groceries",
-    amount: "50",
-    purpose: "Groceries shopping for the week",
-  };
+  useEffect(() => {
+    if (isSuccess && data) {
+      const updateContentData = data.data as IExpense;
+      setExpense({
+        category: updateContentData?.category || "",
+        amount: updateContentData?.amount?.toString() || "",
+        purpose: updateContentData?.purpose || "",
+      });
+    }
+  }, [data, isSuccess]);
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
@@ -42,31 +49,17 @@ const ExpenseForm = () => {
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const selectedCategory = spendingLimits.find(
-      (limit) => limit.name === expense.category
-    );
-
-    if (!selectedCategory) {
-      toast.warning("Invalid category selected.");
-      return;
-    }
-
-    if (Number(expense.amount) > selectedCategory.limit) {
-      toast.warning(
-        `The entered amount exceeds the spending limit for ${expense.category}. Your limit is $${selectedCategory.limit}.`
-      );
-      return;
-    }
-
     if (user && user?.userId) {
       const data = {
         category: e.currentTarget.category.value,
         amount: Number(e.currentTarget.amount.value),
         purpose: e.currentTarget.purpose.value,
-        author: user?.userId,
       };
 
-      const res = (await addExpense(data)) as unknown as TResponse<any>;
+      const res = (await updateExpense({
+        id: contentId,
+        expenseData: data,
+      })) as unknown as TResponse<any>;
       if (res.error) {
         toast.error(res.error.data.message, { duration: 2000 });
       } else {
@@ -76,24 +69,18 @@ const ExpenseForm = () => {
           amount: "",
           purpose: "",
         });
-        // router.push("/");
+
+        closeModal();
       }
     } else {
-      toast.warning("Please fill in all fields.");
+      alert("Please fill in all fields.");
     }
-  };
-
-  const handleSetDefaultValues = () => {
-    setExpense(defaultValues);
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.subContainer}>
-        <Title title="Add Your Expense" />
         <form className={styles.expenseForm} onSubmit={handleSubmit}>
-          <h2>Track Your Expense</h2>
-
           <div className={styles.formControl}>
             <label htmlFor="category">Category</label>
             <select
@@ -140,14 +127,7 @@ const ExpenseForm = () => {
           </div>
 
           <button type="submit" className={styles.btn}>
-            Add Expense
-          </button>
-
-          <button
-            className={styles.defaultbtn}
-            onClick={handleSetDefaultValues}
-          >
-            Set Default Values
+            Update Expense
           </button>
         </form>
       </div>
@@ -155,4 +135,4 @@ const ExpenseForm = () => {
   );
 };
 
-export default ExpenseForm;
+export default UpdateExpense;
